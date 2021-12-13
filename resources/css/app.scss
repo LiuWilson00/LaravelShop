@@ -1,0 +1,30 @@
+#app {
+  .products-main {
+    display: flex;
+    .product {
+      border-style: solid;
+      margin-bottom: 5px;
+      border-width: 1px;
+      padding: 10px;
+    }
+  }
+
+  .product-show {
+    button.add-cart {
+      cursor: pointer;
+      margin-left: 10px;
+      border: none;
+      background: aquamarine;
+      color: gray;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    button.add-cart:hover {
+      background: rgb(71, 139, 117);
+      color: rgb(245, 245, 245);
+    }
+  }
+  .cart-main {
+    padding: 50px;
+  }
+}

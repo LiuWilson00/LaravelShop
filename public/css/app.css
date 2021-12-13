@@ -1,0 +1,25 @@
+#app .products-main {
+  display: flex;
+}
+#app .products-main .product {
+  border-style: solid;
+  margin-bottom: 5px;
+  border-width: 1px;
+  padding: 10px;
+}
+#app .product-show button.add-cart {
+  cursor: pointer;
+  margin-left: 10px;
+  border: none;
+  background: aquamarine;
+  color: gray;
+  padding: 10px;
+  border-radius: 10px;
+}
+#app .product-show button.add-cart:hover {
+  background: #478b75;
+  color: whitesmoke;
+}
+#app .cart-main {
+  padding: 50px;
+}
