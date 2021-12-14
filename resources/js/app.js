@@ -1,19 +1,26 @@
 import ReactDom from "react-dom";
-import Product from "./components/Product";
+import Products from "./components/Products";
 import Cart from "./components/Cart";
 import "antd/dist/antd.css";
 window.render = {
-  Cart: (props = {}, tag = "main") => {
-    componentRenderByReactDom(props, Cart, tag);
-  },
-  Product: (props = {}, tag = "main") => {
-    componentRenderByReactDom(props, Product, tag);
-  },
+    Cart: {
+        index: (props = {}, tag = "main") => {
+            componentRenderByReactDom(props, Cart.main, tag);
+        },
+    },
+    Products: {
+        show: (props = {}, tag = "main") => {
+            componentRenderByReactDom(props, Products.show, tag);
+        },
+        create: (props = {}, tag = "main") => {
+            componentRenderByReactDom(props, Products.create, tag);
+        },
+    },
 };
 
 const componentRenderByReactDom = (props, Component, tag) => {
-  ReactDom.render(
-    <Component {...props}></Component>,
-    document.getElementById(tag)
-  );
+    ReactDom.render(
+        <Component {...props}></Component>,
+        document.getElementById(tag)
+    );
 };

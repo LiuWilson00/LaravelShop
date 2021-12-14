@@ -7,7 +7,7 @@
 
 @endsection
 
-@section('content')
+{{-- @section('content')
 
     <a href="{{ route('products.index') }}">
         back
@@ -29,4 +29,25 @@
             </ul>
         </div>
     @endif
+@endsection --}}
+
+
+@section('content')
+    <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
+        @csrf
+        <div id="main"></div>
+    </form>
+
+@endsection
+
+@section('inline_js')
+    <script>
+        render.Products.create({
+            name: "{{ old('name') }}",
+            price: "{{ old('price') }}",
+            imgUrl: "{{ old('image') }}",
+            backHref: "{{ route('products.index') }}",
+
+        })
+    </script>
 @endsection

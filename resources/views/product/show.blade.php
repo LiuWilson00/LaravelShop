@@ -13,7 +13,7 @@
 
 @section('inline_js')
     <script>
-        render.Product({
+        render.Products.show({
             name: "{{ $product->name }}",
             price: "{{ $product->price }}",
             imgUrl: "{{ $product->image_url }}",

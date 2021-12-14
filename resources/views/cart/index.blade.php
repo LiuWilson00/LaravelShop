@@ -14,6 +14,6 @@
 @endsection
 @section('inline_js')
     <script>
-        render.Cart()
+        render.Cart.index()
     </script>
 @endsection

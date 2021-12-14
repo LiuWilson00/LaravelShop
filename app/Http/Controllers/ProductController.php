@@ -35,12 +35,12 @@ class ProductController extends Controller
         ]);
         // $path = $request->file('image')->store('local');
         $path = Storage::putFile('public/products', $request->file('image'));
-        // $name = $request['name'];
-        // echo ("$name create");
+        $newPath = str_replace("public", "storage", $path);
+
         DB::table('products')->insert([
             'name' => $request['name'],
             'price' => $request['price'],
-            'image_url' => str_replace("public", "storage", $path)
+            'image_url' =>  "/$newPath"
         ]);
 
         return redirect()->route('products.index');
