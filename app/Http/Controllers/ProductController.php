@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Rules\UrlSubRouteRule;
 use Illuminate\Support\Facades\DB;
+use App\Models\Product;
 
 
 class ProductController extends Controller
 {
     function index()
     {
-        $products = DB::table('products')->get();
+        $products = Product::all();
+
         return view('product.index', [
             'products' => $products
         ]);
@@ -26,6 +28,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
         //
         $validated = $request->validate([
             'name' => 'required|string|max:10',
@@ -34,13 +37,18 @@ class ProductController extends Controller
 
         ]);
         // $path = $request->file('image')->store('local');
-        $path = Storage::putFile('public/products', $request->file('image'));
+        // $path = Storage::putFile('public/products', $request->file('image'));
+        // $newPath = str_replace("public", "storage", $path);
+        $diskName = "public";
+        $fileOriginalName = $request->file('image')->getClientOriginalName();
+        $path = $request->file('image')->storeAs('products', $fileOriginalName, $diskName);
         $newPath = str_replace("public", "storage", $path);
 
-        DB::table('products')->insert([
+
+        Product::create([
             'name' => $request['name'],
             'price' => $request['price'],
-            'image_url' =>  "/$newPath"
+            'image_url' =>  "/storage/$newPath"
         ]);
 
         return redirect()->route('products.index');
@@ -51,7 +59,7 @@ class ProductController extends Controller
 
         // $id = $request->input('id');
 
-        $product = DB::table('products')->where("id", $id)->first();
+        $product =  Product::where("id", $id)->first();
 
 
         if (is_null($product)) {
@@ -65,7 +73,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = DB::table('products')->where("id", $id)->first();
+        $product =  Product::where("id", $id)->first();
 
 
         if (is_null($product)) {
@@ -80,32 +88,64 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $product = DB::table('products')->where("id", $id)->first();
+        $product =  Product::where("id", $id)->first();
 
+        $validated = $request->validate([
+            'name' => 'required|string|max:10',
+            'price' => 'required|integer|min:0|max:999999',
+            'image' => ['nullable', 'image'] //['required', 'string', new UrlSubRouteRule]
+
+        ]);
+        unset($validated['image']);
         if (is_null($product)) {
             return redirect()->route('products.index');
         }
 
-        $affected = DB::table('products')
-            ->where('id', 1)
-            ->update([
-                'name' => $request['name'],
-                'price' => $request['price'],
-            ]);
-        return redirect()->route('products.edit', ['product' => $product->id]);
+
+        if ($request->has('image')) {
+            $diskName = "public";
+            $disk = Storage::disk($diskName);
+            if ($disk->exists($product->image_url)) {
+                $disk->delete($product->image_url);
+            }
+            $fileOriginalName = $request->file('image')->getClientOriginalName();
+            $path = $request->file('image')->storeAs('products', $fileOriginalName, $diskName);
+            $newPath = str_replace("public", "storage", $path);
+
+            $validated['image_url'] = "/storage/$newPath";
+        }
+
+        $product->update($validated);
+        // $affected = DB::table('products')
+        //     ->where('id', $id)
+        //     ->update([
+        //         'name' =>  $validated['name'],
+        //         'price' =>  $validated['price'],
+        //         'image_url' =>  $newPath ? "/storage/$newPath" : $product->image_url
+        //     ]);
+
+        return redirect()->route('products.index');
     }
 
     public function destroy($id)
     {
         //
-        $product = DB::table('products')->where("id", $id)->first();
+        $product =  Product::where("id", $id)->first();
 
 
         if (is_null($product)) {
             return redirect()->route('products.index');
         }
+        $diskName = "public";
+        $disk = Storage::disk($diskName);
+        $storagePath = str_replace("/storage", "", $product->image_url);
+        if ($disk->exists($storagePath)) {
+            $disk->delete($storagePath);
+        }
 
-        DB::table('products')->where("id", $id)->delete();
+
+        $product->delete();
+        // DB::table('products')->where("id", $id)->delete();
         return redirect()->route('products.index');
     }
 }

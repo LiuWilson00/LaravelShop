@@ -33,11 +33,16 @@ class ProductSeeder extends Seeder
             'name' => 'apple',
             'price' => 30,
             'image_url' => '/images/products/apple_1.jpg',
+            'category_id' => 1
         ]);
         DB::table('products')->insert([
             'name' => 'apple',
             'price' => 30,
             'image_url' => '/images/products/orange_1.jpg',
+            'category_id' => 1
+        ]);
+        DB::table('categories')->insert([
+            'name' => 'Fruit',
         ]);
     }
 }

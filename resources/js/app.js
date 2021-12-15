@@ -15,6 +15,9 @@ window.render = {
         create: (props = {}, tag = "main") => {
             componentRenderByReactDom(props, Products.create, tag);
         },
+        edit: (props = {}, tag = "main") => {
+            componentRenderByReactDom(props, Products.edit, tag);
+        },
     },
 };
 

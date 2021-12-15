@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { Input, Upload, Button, Skeleton } from "antd";
+import { Input, Upload, Button, Skeleton, message } from "antd";
 import { Modal } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const { info } = Modal;
-const ProductCreate = (props) => {
-    const { name, price, backHref, imgUrl, id } = props;
-    const [previewUrl, setPreviewUrl] = useState();
-
+const ProductEditor = (props) => {
+    const { name, price, backHref, imgUrl, err } = props;
+    const [previewUrl, setPreviewUrl] = useState(imgUrl);
+    useEffect(() => {
+        if (err.length > 0) {
+            err.forEach((e) => {
+                message.error(e);
+            });
+        }
+    }, []);
     return (
         <div>
-            <h1>Create Product</h1>
+            <h1>Edit Product</h1>
             <a href={backHref}>back</a>
             <div>
                 <Input
@@ -32,7 +38,6 @@ const ProductCreate = (props) => {
                     name="image"
                     placeholder="plese enter product image"
                     onChange={(el) => {
-                        console.log(el);
                         const files = el.target.files;
 
                         if (files && files[0]) {
@@ -53,12 +58,13 @@ const ProductCreate = (props) => {
                 ) : (
                     <Skeleton.Image style={{ width: 400, height: 300 }} />
                 )}
-                <div>
-                    <button type="submit">submit</button>
-                </div>
+                {/* <div>
+                    <Button type="submit">submit</Button>
+                </div> */}
+                <button type="submit">Submit</button>
             </div>
         </div>
     );
 };
 
-export default ProductCreate;
+export default ProductEditor;
