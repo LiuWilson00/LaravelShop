@@ -17,6 +17,7 @@
                 <div><a href="{{ route('products.edit', ['product' => $product->id]) }}">edit</a></div>
                 <a href="{{ route('products.show', ['product' => $product->id]) }}">
                     <p>{{ $product->name }}</p>
+                    <p style="color:gray" >{{$product->category->name}} </p>
                     <img src="{{ $product->image_url }}" width="400" alt="product">
                 </a>
                 <div>
