@@ -41,8 +41,5 @@ class ProductSeeder extends Seeder
             'image_url' => '/images/products/orange_1.jpg',
             'category_id' => 1
         ]);
-        DB::table('categories')->insert([
-            'name' => 'Fruit',
-        ]);
     }
 }

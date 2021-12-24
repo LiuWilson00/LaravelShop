@@ -18276,7 +18276,9 @@ var Product = function Product(props) {
       price = props.price,
       backHref = props.backHref,
       imgUrl = props.imgUrl,
-      id = props.id;
+      id = props.id,
+      categoriesList = props.categoriesList,
+      category_naem = props.category_naem;
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
       _useState2 = _slicedToArray(_useState, 2),
@@ -18372,6 +18374,21 @@ var Product = function Product(props) {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
       href: backHref,
       children: "back"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      style: {
+        display: "flex"
+      },
+      children: categoriesList.map(function (c) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          style: {
+            marginRight: 10
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("a", {
+            href: c.url,
+            children: c.name
+          }, c.category_id)
+        });
+      })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
         onChange: function onChange(el) {

@@ -7,13 +7,22 @@ use Illuminate\Support\Facades\Storage;
 use App\Rules\UrlSubRouteRule;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Models\Category;
 
 
 class ProductController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
-        $products = Product::all();
+
+
+        $category_id = $request->input('category_id');
+        if (!empty($category_id)) {
+            $category = Category::find($category_id);
+            $products = $category->products;
+        } else {
+            $products = Product::all();
+        }
 
         return view('product.index', [
             'products' => $products
@@ -44,7 +53,7 @@ class ProductController extends Controller
         $path = $request->file('image')->storeAs('products', $fileOriginalName, $diskName);
         $newPath = str_replace("public", "storage", $path);
 
-
+        
         Product::create([
             'name' => $request['name'],
             'price' => $request['price'],

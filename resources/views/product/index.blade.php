@@ -15,11 +15,17 @@
         @foreach ($products as $product)
             <div class="product">
                 <div><a href="{{ route('products.edit', ['product' => $product->id]) }}">edit</a></div>
-                <a href="{{ route('products.show', ['product' => $product->id]) }}">
-                    <p>{{ $product->name }}</p>
-                    <p style="color:gray" >{{$product->category->name}} </p>
+                <div>
+                    <a style="font-size:1.25rem;margin-right:10px"
+                        href="{{ route('products.show', ['product' => $product->id]) }}">{{ $product->name }}</a>
+                    <a style="color:gray"
+                        href="{{ route('products.index', ['category_id' => @$product->category->id]) }}">{{ @$product->category->name }}
+                    </a>
+
+                </div>
+                <div class="image-group">
                     <img src="{{ $product->image_url }}" width="400" alt="product">
-                </a>
+                </div>
                 <div>
                     <form method="post" action="{{ route('products.destroy', ['product' => $product->id]) }}">
                         @csrf
