@@ -19,7 +19,7 @@ class ProductController extends Controller
         $category_id = $request->input('category_id');
         if (!empty($category_id)) {
             $category = Category::find($category_id);
-            $products = $category->products;
+            $products = $category->allRelatedProducts();
         } else {
             $products = Product::all();
         }
@@ -53,7 +53,7 @@ class ProductController extends Controller
         $path = $request->file('image')->storeAs('products', $fileOriginalName, $diskName);
         $newPath = str_replace("public", "storage", $path);
 
-        
+
         Product::create([
             'name' => $request['name'],
             'price' => $request['price'],
