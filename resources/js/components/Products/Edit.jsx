@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
-import { Input, Upload, Button, Skeleton, message } from "antd";
+import { Input, Select, Skeleton, message } from "antd";
 import { Modal } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 
 const { info } = Modal;
 const ProductEditor = (props) => {
-    const { name, price, backHref, imgUrl, err } = props;
+    const { name, price, backHref, imgUrl, err, categories, category_id } =
+        props;
     const [previewUrl, setPreviewUrl] = useState(imgUrl);
+    const [categoryId, setCategoryId] = useState(category_id);
     useEffect(() => {
         if (err.length > 0) {
             err.forEach((e) => {
@@ -20,6 +22,28 @@ const ProductEditor = (props) => {
         <div>
             <h1>Edit Product</h1>
             <a href={backHref}>back</a>
+            <div className="select-group">
+                <Select
+                    defaultValue={category_id}
+                    style={{ width: 120 }}
+                    value={categoryId}
+                    onChange={(el) => {
+                        setCategoryId(el);
+                    }}
+                >
+                    {categories.map((category) => (
+                        <Option value={category?.category_id}>
+                            {category?.name}
+                        </Option>
+                    ))}
+                </Select>
+                <input
+                    style={{ display: "none" }}
+                    type="text"
+                    name="category_id"
+                    value={categoryId}
+                />
+            </div>
             <div>
                 <Input
                     type="text"

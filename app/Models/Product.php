@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'image_url', 'price'];
+    protected $fillable = ['name', 'image_url', 'price', 'category_id', 'brand_id'];
 
     use HasFactory;
     private $procutTagName = 'product_tag';

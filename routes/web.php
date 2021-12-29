@@ -1,11 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,14 +16,52 @@ use App\Http\Controllers\CartController;
 |
 */
 
+
+/**
+ * ==not logged in ==
+ */
+//* page
 Route::get('/', function () {
-    return view('home');
+    return view('welcome');
 });
-
-Route::get('/about', [PageController::class, 'about']);
-
-Route::resource('/products', ProductController::class);
-
-Route::resource('/orders', OrderController::class);
-
+//* products
+//* products/search
+//* users
+//* carts/index
 Route::resource('/cart', CartController::class)->middleware('check.token');
+
+
+/**
+ * ==logged in ==
+ */
+//* orders
+//* profile
+//* carts/purchase
+
+
+/**
+ * ==logged in ==
+ */
+//* admin/page
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+//* admin/products
+Route::resource('/products', ProductController::class);
+//* admin/orders
+Route::resource('/orders', OrderController::class);
+//* admin/brands
+//* admin/categories
+//* admin/users
+//* admin/carts
+
+
+
+
+
+
+
+
+
+
+require __DIR__ . '/auth.php';

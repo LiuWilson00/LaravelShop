@@ -47,7 +47,14 @@
             price: "{{ old('price') }}",
             imgUrl: "{{ old('image') }}",
             backHref: "{{ route('products.index') }}",
-
+            categories: [
+                @foreach ($categories as $category)
+                    {
+                    "name":"{{ $category->name }}",
+                    "category_id":"{{ $category->id }}",
+                    },
+                @endforeach
+            ]
         })
     </script>
 @endsection

@@ -2,6 +2,13 @@ import ReactDom from "react-dom";
 import Products from "./components/Products";
 import Cart from "./components/Cart";
 import "antd/dist/antd.css";
+
+require("./bootstrap");
+
+import Alpine from "alpinejs";
+
+window.Alpine = Alpine;
+
 window.render = {
     Cart: {
         index: (props = {}, tag = "main") => {
@@ -27,3 +34,5 @@ const componentRenderByReactDom = (props, Component, tag) => {
         document.getElementById(tag)
     );
 };
+
+Alpine.start();

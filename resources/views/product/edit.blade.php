@@ -41,11 +41,21 @@
             @endforeach
         
         @endif
+
         render.Products.edit({
             name: "{{ $product->name }}",
             price: "{{ $product->price }}",
             imgUrl: "{{ $product->image_url }}",
             backHref: "{{ route('products.index') }}",
+            category_id: "{{ $product->category->id }}",
+            categories: [
+                @foreach ($categories as $category)
+                    {
+                    "name":"{{ $category->name }}",
+                    "category_id":"{{ $category->id }}",
+                    },
+                @endforeach
+            ],
             err: err
         })
     </script>

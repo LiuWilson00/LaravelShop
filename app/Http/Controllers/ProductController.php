@@ -32,7 +32,10 @@ class ProductController extends Controller
     public function create()
     {
         //
-        return view('product.create');
+        $categories = Category::all();
+        return view('product.create', [
+            'categories' => $categories
+        ]);
     }
 
     public function store(Request $request)
@@ -42,7 +45,8 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:10',
             'price' => 'required|integer|min:0|max:999999',
-            'image' => 'required' //['required', 'string', new UrlSubRouteRule]
+            'image' => 'required', //['required', 'string', new UrlSubRouteRule]\
+            'category_id' => 'required'
 
         ]);
         // $path = $request->file('image')->store('local');
@@ -53,12 +57,21 @@ class ProductController extends Controller
         $path = $request->file('image')->storeAs('products', $fileOriginalName, $diskName);
         $newPath = str_replace("public", "storage", $path);
 
+        $category = Category::find($request['category_id']);
 
-        Product::create([
+        // var_dump($request['category_id']);
+        $category->products()->create([
             'name' => $request['name'],
             'price' => $request['price'],
-            'image_url' =>  "/storage/$newPath"
+            'image_url' =>  "/storage/$newPath",
         ]);
+        // Product::create([
+        //     'name' => $request['name'],
+        //     'price' => $request['price'],
+        //     'image_url' =>  "/storage/$newPath",
+        //     'category_id' => $request['category_id'],
+        //     'brand_id' => 0
+        // ]);
 
         return redirect()->route('products.index');
     }
@@ -75,6 +88,7 @@ class ProductController extends Controller
             abort('404');
         }
 
+
         return view('product.show', [
             'product' =>  $product
         ]);
@@ -89,8 +103,11 @@ class ProductController extends Controller
             abort('404');
         }
 
+        $categories = Category::all();
+
         return view('product.edit', [
-            'product' =>  $product
+            'product' =>  $product,
+            'categories' => $categories
         ]);
     }
 
@@ -102,7 +119,8 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:10',
             'price' => 'required|integer|min:0|max:999999',
-            'image' => ['nullable', 'image'] //['required', 'string', new UrlSubRouteRule]
+            'image' => ['nullable', 'image'], //['required', 'string', new UrlSubRouteRule]
+            'category_id' => 'required'
 
         ]);
         unset($validated['image']);

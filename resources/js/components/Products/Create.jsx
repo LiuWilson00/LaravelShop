@@ -1,19 +1,43 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Cookies from "js-cookie";
-import { Input, Upload, Button, Skeleton } from "antd";
+import { Input, Skeleton, Select } from "antd";
 import { Modal } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import axios from "axios";
-
+// import { UploadOutlined } from "@ant-design/icons";
+// import axios from "axios";
+const { Option } = Select;
 const { info } = Modal;
 const ProductCreate = (props) => {
-    const { name, price, backHref, imgUrl, id } = props;
+    const { name, price, backHref, imgUrl, id, categories } = props;
     const [previewUrl, setPreviewUrl] = useState();
+    const [categoryId, setCategoryId] = useState("1");
 
     return (
         <div>
             <h1>Create Product</h1>
             <a href={backHref}>back</a>
+
+            <div className="select-group">
+                <Select
+                    defaultValue={categoryId}
+                    style={{ width: 120 }}
+                    value={categoryId}
+                    onChange={(el) => {
+                        setCategoryId(el);
+                    }}
+                >
+                    {categories.map((category) => (
+                        <Option value={category?.category_id}>
+                            {category?.name}
+                        </Option>
+                    ))}
+                </Select>
+                <input
+                    style={{ display: "none" }}
+                    type="text"
+                    name="category_id"
+                    value={categoryId}
+                />
+            </div>
             <div>
                 <Input
                     type="text"
@@ -27,6 +51,7 @@ const ProductCreate = (props) => {
                     defaultValue={price}
                     placeholder="plese enter product price"
                 />
+
                 <input
                     type="file"
                     name="image"
