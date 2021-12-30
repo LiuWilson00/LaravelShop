@@ -26,6 +26,43 @@
         <!-- Page Heading -->
 
         <!-- Page Content -->
+        {{-- <div class=" fixed top-0 right-0 px-6 py-4 sm:block">
+            @if (MemberAuth::isLiggedIn())
+                <p>Hi, {{ MemberAuth::member()->email }}</p>
+                <form method="POST" action="{{ route('members.session.delete') }}">
+                    @csrf
+                    @method('DELETE')
+                    <x-dropdown-link :href="route('members.session.delete')" onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                        {{ __('Log Out') }}
+                    </x-dropdown-link>
+                </form>
+            @else
+                <a href="{{ route('members.session.create') }}" class="text-sm text-gray-700 underline">Login</a>
+                <a href="{{ route('members.create') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
+            @endif
+        </div> --}}
+        @if (Route::has('login'))
+            <div class=" fixed top-0 right-0 px-6 py-4 sm:block">
+                @auth
+                    <p>hi,{{ Auth::user()->name }}</p>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
+                                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-dropdown-link>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Login</a>
+
+                    @if (Route::has('register'))
+                        <a href="{{ route('register') }}" class="ml-4 text-sm text-gray-700 underline">Register</a>
+                    @endif
+                @endauth
+            </div>
+        @endif
         <main>
 
 
@@ -33,6 +70,17 @@
                 @yield('content')
             </div>
         </main>
+        <div class="err">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        </div>
     </div>
 </body>
 @include('layouts.js')

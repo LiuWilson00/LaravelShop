@@ -10,7 +10,7 @@
 
 @section('content')
 
-    @if (Route::has('login'))
+    {{-- @if (Route::has('login'))
         <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
             @auth
                 <p>hi,{{ Auth::user()->name }}</p>
@@ -30,6 +30,6 @@
                 @endif
             @endauth
         </div>
-    @endif
+    @endif --}}
     <p>This is my body content.</p>
 @endsection

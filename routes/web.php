@@ -6,6 +6,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MemberSessionController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,7 +25,16 @@ use App\Http\Controllers\Admin\PageController as AdminPageController;
  * ==not logged in ==
  */
 //* page
-Route::get('/', [PageController::class, 'home']);
+Route::get('/', [PageController::class, 'home'])->name('index');
+Route::prefix('members')->name('members.')->group(function () {
+    Route::resource('/', MemberController::class)->only(['create', 'store']);
+    Route::delete('/session', [MemberSessionController::class, 'delete'])->name('session.delete');
+    Route::resource('session', MemberSessionController::class)->only([
+        'create',
+        'store',
+    ]);
+});
+
 //* products
 //* products/search
 //* users
@@ -42,14 +54,14 @@ Route::resource('/cart', CartController::class)->middleware('check.token');
  * ==logged in ==
  */
 //* admin/page
-Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
     Route::get('/', [AdminPageController::class, 'home'])->name('home');
 });
 
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 //* admin/products
 Route::resource('/products', ProductController::class);
 //* admin/orders

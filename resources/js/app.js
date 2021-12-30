@@ -1,6 +1,7 @@
 import ReactDom from "react-dom";
 import Products from "./components/Products";
 import Cart from "./components/Cart";
+import Members from "./components/Members";
 import "antd/dist/antd.css";
 
 require("./bootstrap");
@@ -24,6 +25,14 @@ window.render = {
         },
         edit: (props = {}, tag = "main") => {
             componentRenderByReactDom(props, Products.edit, tag);
+        },
+    },
+    Members: {
+        register: (props = {}, tag = "main") => {
+            componentRenderByReactDom(props, Members.register, tag);
+        },
+        login: (props = {}, tag = "main") => {
+            componentRenderByReactDom(props, Members.login, tag);
         },
     },
 };
