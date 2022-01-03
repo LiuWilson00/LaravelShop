@@ -32,6 +32,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        $user= Auth::guard('web')->user();
+
+        if($user->is_admin){
+            Auth::guard('admin')->login($user);
+        }
+
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

@@ -54,7 +54,7 @@ Route::resource('/cart', CartController::class)->middleware('check.token');
  * ==logged in ==
  */
 //* admin/page
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('admin')->name('admin.')->middleware(['auth:admin', 'verified'])->group(function () {
     Route::get('/', [AdminPageController::class, 'home'])->name('home');
 });
 
